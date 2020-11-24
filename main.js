@@ -51,7 +51,9 @@ class BlockChain{
 let voteChain = new BlockChain();
 voteChain.addBlock(new Block(1, "11/23/2020", {amount:4}));
 voteChain.addBlock(new Block(2, "11/23/2020", {amount:10}));
+voteChain.addBlock(new Block(3, "11/23/2020", {amount:15}));
 console.log(JSON.stringify(voteChain, null, 5));
 console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
 voteChain.chain[1].data = {amount : 100}
+console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
 console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
