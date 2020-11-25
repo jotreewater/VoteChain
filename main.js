@@ -8,7 +8,7 @@ class Block{
         this.data = data;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
-        this.nonce = 0;
+        this.nonce = 4;
     }
     //Uses data during a block's creation to generate a unique hash
     calculateHash(){
@@ -57,6 +57,10 @@ class BlockChain{
         return true;
     }
 }
+
+//git add ./
+//git commit
+//git push
 
 let voteChain = new BlockChain();
 
