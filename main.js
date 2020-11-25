@@ -8,17 +8,27 @@ class Block{
         this.data = data;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
+        this.nonce = 0;
     }
     //Uses data during a block's creation to generate a unique hash
     calculateHash(){
-        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
+        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
+    }
+    mineBlock(difficulty){
+        while(this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")){
+            this.nonce++;
+            this.hash = this.calculateHash();
+        }
+        console.log("Block mined: " + this.hash);
     }
 }
+
 
 //Keeps track of the chain
 class BlockChain{
     constructor(){
         this.chain = [this.createGenesisBlock()];
+        this.difficulty = 2;
     }
     //First block
     createGenesisBlock(){
@@ -29,7 +39,7 @@ class BlockChain{
     }
     addBlock(newBlock){
         newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock.calculateHash();
+        newBlock.mineBlock(this.difficulty);
         this.chain.push(newBlock);
     }
     //Iterates through the chain comparing each block's hashes looking for discrepencies
@@ -49,11 +59,11 @@ class BlockChain{
 }
 
 let voteChain = new BlockChain();
+
+console.log('Mining block 1...');
 voteChain.addBlock(new Block(1, "11/23/2020", {amount:4}));
-voteChain.addBlock(new Block(2, "11/23/2020", {amount:10}));
-voteChain.addBlock(new Block(3, "11/23/2020", {amount:15}));
-console.log(JSON.stringify(voteChain, null, 5));
-console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
-voteChain.chain[1].data = {amount : 100}
-console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
-console.log('Is Blockchain Valid? ' + voteChain.isChainValid());
+console.log('Blockchain valid? ' + voteChain.isChainValid());
+
+console.log('Mining block 2...');
+voteChain.addBlock(new Block(2, "11/24/2020", {amount:10}));
+console.log('Blockchain valid? ' + voteChain.isChainValid());
